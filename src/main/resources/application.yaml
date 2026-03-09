@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: minesweeper
+
+  server:
+    port: 8080
+    error:
+      include-message: always
+      include-binding-errors: always
+
+  logging:
+    level:
+      ru.studiotg.minesweeper: DEBUG
+
+game:
+  max_field_size: 30
