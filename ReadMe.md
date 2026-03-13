@@ -17,7 +17,7 @@ API доступно по адресу:
 ### Локальная сборка с Java
 ```bash
 # Сборка JAR файла
-./gradlew bootJar -x test
+./gradlew bootJar
 
 # Запуск приложения
 java -jar build/libs/minesweeper-0.0.1-SNAPSHOT.jar
@@ -26,7 +26,7 @@ java -jar build/libs/minesweeper-0.0.1-SNAPSHOT.jar
 ### Сборка с Gradle
 ```bash
 # Очистка и сборка
-./gradlew clean build -x test
+./gradlew clean build
 
 # Запуск через Gradle
 ./gradlew bootRun
