@@ -1,6 +1,8 @@
 package ru.studiotg.minesweeper.model;
 
 import lombok.Data;
+import ru.studiotg.minesweeper.type.FieldState;
+
 import java.util.UUID;
 
 @Data
@@ -11,7 +13,7 @@ public class Game {
     private int minesCount;
     private boolean completed;
     private boolean won;
-    private String[][] field;        // Текущее поле (что видит игрок)
+    private FieldState[][] field;        // Текущее поле (что видит игрок)
     private boolean[][] mines;        // Расположение мин
     private boolean[][] opened;       // Открытые ячейки
     private int[][] neighbourMines;   // Количество мин рядом
@@ -23,7 +25,7 @@ public class Game {
         this.minesCount = minesCount;
         this.completed = false;
         this.won = false;
-        this.field = new String[height][width];
+        this.field = new FieldState[height][width];
         this.mines = new boolean[height][width];
         this.opened = new boolean[height][width];
         this.neighbourMines = new int[height][width];
@@ -31,7 +33,7 @@ public class Game {
         // Инициализация поля пробелами
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                field[i][j] = " ";
+                field[i][j] = FieldState.CLOSED;
             }
         }
     }

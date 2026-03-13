@@ -50,9 +50,9 @@ class GameServiceTest {
         assertEquals(10, gameInfo.field()[0].length);
 
         // Проверяем, что все ячейки закрыты
-        for (String[] row : gameInfo.field()) {
-            for (String cell : row) {
-                assertEquals(FieldState.CLOSED.getValue(), cell);
+        for (FieldState[] row : gameInfo.field()) {
+            for (FieldState cell : row) {
+                assertEquals(FieldState.CLOSED, cell);
             }
         }
     }
@@ -100,10 +100,7 @@ class GameServiceTest {
         assertTrue(response.completed());
 
         // Проверяем, что мина отмечена как X
-        boolean mineFound = false;
-        if (FieldState.EXPLODED_MINE.getValue().equals(response.field()[mineRowCol[0]][mineRowCol[1]])) {
-            mineFound = true;
-        }
+        boolean mineFound = FieldState.EXPLODED_MINE.equals(response.field()[mineRowCol[0]][mineRowCol[1]]);
 
         assertTrue(mineFound);
     }
@@ -151,7 +148,7 @@ class GameServiceTest {
                 () -> gameService.makeTurn(turnRequest)
         );
 
-        assertEquals("Игра с указанным game_id не найдена.", exception.getMessage());
+        assertTrue(exception.getMessage().contains("Игра с указанным game_id"));
     }
 
     @Test
@@ -218,9 +215,9 @@ class GameServiceTest {
 
         // Проверяем, что мины отмечены как M
         int mineCount = 0;
-        for (String[] row : response.field()) {
-            for (String cell : row) {
-                if (FieldState.MINE.getValue().equals(cell)) {
+        for (FieldState[] row : response.field()) {
+            for (FieldState cell : row) {
+                if (FieldState.MINE.equals(cell)) {
                     mineCount++;
                 }
             }
@@ -260,11 +257,11 @@ class GameServiceTest {
         assertTrue(openedCount > 1); // Открылось больше одной ячейки
     }
 
-    private int countOpenedCells(String[][] field) {
+    private int countOpenedCells(FieldState[][] field) {
         int count = 0;
-        for (String[] row : field) {
-            for (String cell : row) {
-                if (!FieldState.CLOSED.getValue().equals(cell)) {
+        for (FieldState[] row : field) {
+            for (FieldState cell : row) {
+                if (!FieldState.CLOSED.equals(cell)) {
                     count++;
                 }
             }

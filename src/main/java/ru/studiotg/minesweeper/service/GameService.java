@@ -42,7 +42,7 @@ public class GameService {
 
         // Проверка существования игры
         if (game == null) {
-            throw new GameException("Игра с указанным game_id" + request.gameId() + " не найдена.");
+            throw new GameException("Игра с указанным game_id: " + request.gameId() + " не найдена.");
         }
 
         // Проверка, не завершена ли игра
@@ -172,9 +172,9 @@ public class GameService {
         for (int i = 0; i < game.getHeight(); i++) {
             for (int j = 0; j < game.getWidth(); j++) {
                 if (game.getMines()[i][j]) {
-                    game.getField()[i][j] = lost ? FieldState.EXPLODED_MINE.getValue() : FieldState.MINE.getValue();
+                    game.getField()[i][j] = lost ? FieldState.EXPLODED_MINE : FieldState.MINE;
                 } else {
-                    game.getField()[i][j] = String.valueOf(game.getNeighbourMines()[i][j]);
+                    game.getField()[i][j] = FieldState.fromNumber(game.getNeighbourMines()[i][j]);
                 }
             }
         }
@@ -204,9 +204,9 @@ public class GameService {
         for (int i = 0; i < game.getHeight(); i++) {
             for (int j = 0; j < game.getWidth(); j++) {
                 if (game.getOpened()[i][j]) {
-                    game.getField()[i][j] = String.valueOf(game.getNeighbourMines()[i][j]);
+                    game.getField()[i][j] = FieldState.fromNumber(game.getNeighbourMines()[i][j]);
                 } else {
-                    game.getField()[i][j] = FieldState.CLOSED.getValue();
+                    game.getField()[i][j] = FieldState.CLOSED;
                 }
             }
         }

@@ -44,10 +44,10 @@ class GameControllerTest {
         validGameRequest = new NewGameRequest(10, 10, 10);
         validTurnRequest = new GameTurnRequest("test-game-id", 5, 5);
 
-        String[][] field = new String[10][10];
+        FieldState[][] field = new FieldState[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                field[i][j] = FieldState.CLOSED.getValue();
+                field[i][j] = FieldState.CLOSED;
             }
         }
 
@@ -62,7 +62,7 @@ class GameControllerTest {
         when(gameService.createGame(any(NewGameRequest.class)))
                 .thenReturn(responseEntity);
 
-        mockMvc.perform(post("/api/games/new")
+        mockMvc.perform(post("/api/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validGameRequest)))
                 .andExpect(status().isOk())
@@ -81,7 +81,7 @@ class GameControllerTest {
         when(gameService.createGame(any(NewGameRequest.class)))
                 .thenThrow(new GameException("Необходимо указать ширину поля."));
 
-        mockMvc.perform(post("/api/games/new")
+        mockMvc.perform(post("/api/new")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest())
@@ -93,7 +93,7 @@ class GameControllerTest {
         when(gameService.makeTurn(any(GameTurnRequest.class)))
                 .thenReturn(responseEntity);
 
-        mockMvc.perform(post("/api/games/turn")
+        mockMvc.perform(post("/api/turn")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validTurnRequest)))
                 .andExpect(status().isOk())
@@ -105,7 +105,7 @@ class GameControllerTest {
         when(gameService.makeTurn(any(GameTurnRequest.class)))
                 .thenThrow(new GameException("Игра с указанным game_id не найдена"));
 
-        mockMvc.perform(post("/api/games/turn")
+        mockMvc.perform(post("/api/turn")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(validTurnRequest)))
                 .andExpect(status().isBadRequest())
@@ -116,7 +116,7 @@ class GameControllerTest {
     void makeTurnWithNullGameId() throws Exception {
         GameTurnRequest invalidRequest = new GameTurnRequest(null, 5, 5);
 
-        mockMvc.perform(post("/api/games/turn")
+        mockMvc.perform(post("/api/turn")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest());
@@ -126,7 +126,7 @@ class GameControllerTest {
     void makeTurnWithNegativeCoordinates() throws Exception {
         GameTurnRequest invalidRequest = new GameTurnRequest("test-id", -1, 5);
 
-        mockMvc.perform(post("/api/games/turn")
+        mockMvc.perform(post("/api/turn")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest());

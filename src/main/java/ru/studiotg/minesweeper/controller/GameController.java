@@ -11,7 +11,7 @@ import ru.studiotg.minesweeper.dto.NewGameRequest;
 import ru.studiotg.minesweeper.service.GameService;
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class GameController {
 
